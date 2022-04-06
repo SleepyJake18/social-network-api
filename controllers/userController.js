@@ -4,7 +4,6 @@ module.exports = {
   getUsers(req, res) {
     User.find()
       .select('-__v')
-      .populate('users')
       .then((user) => res.json(user))
       .catch((err) => {
         console.error({ message: err });
@@ -14,7 +13,6 @@ module.exports = {
   getSingleUser(req, res) {
     User.findOne({ _id: req.params.userId })
       .select('-__v')
-      .populate('user')
       .then((user) =>
         !user
           ? res.status(404).json({ message: 'No user with that ID' })
@@ -22,7 +20,6 @@ module.exports = {
       )
       .catch((err) => console.error(err));
   },
-  // create a new post
   createUser(req, res) {
     User.create(req.body)
       .then((user) => res.json(user))
@@ -54,4 +51,27 @@ module.exports = {
       .then(() => res.json({ message: 'User and associated apps deleted!' }))
       .catch((err) => res.status(500).json(err));
   },
+  addFriend({params}, res) {
+		User.findOneAndUpdate(
+			{_id: params.userId},
+			{$addToSet: {friends: params.friendId}},
+			{new: true, runValidators: true}
+		)
+		.then((data) => {
+			if(!data) {
+				res.status(400).json({message: 'No User found with this Id.'})
+			}
+			res.json(data)
+		})
+		.catch((err) => res.json(err))
+	},
+	removeFriend({params}, res) {
+		User.findOneAndUpdate(
+			{_id: params.userId},
+			{ $pull: {friends: params.friendId}},
+			{new : true}
+		)
+		.then((data) => res.json(data))
+		.catch((err) => res.json(err))
+	}
 };

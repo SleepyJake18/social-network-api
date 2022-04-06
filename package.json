@@ -1,17 +1,17 @@
 {
-  "name": "24-Stu_Subdoc-Population",
+  "name": "Social-Network-API",
   "version": "1.0.1",
-  "description": "Student activity for populating subdocs",
-  "main": "index.js",
+  "description": "Social network api where users can sign up, add friends, share their thoughts, and react to their thoughts",
+  "main": "server.js",
   "license": "MIT",
   "scripts": {
-    "start": "node index",
-    "dev": "nodemon index",
+    "start": "node server",
+    "dev": "nodemon server",
     "seed": "node utils/seed.js"
   },
   "dependencies": {
     "express": "^4.17.1",
-    "mongoose": "^6.0.13"
+    "mongoose": "^6.2.10"
   },
   "devDependencies": {
     "nodemon": "^2.0.9"
